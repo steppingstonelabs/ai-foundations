@@ -1,0 +1,190 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Badge from '../components/ui/Badge.astro';
+
+export interface Props {
+  session: {
+    title: string;
+    week: number;
+    weekTheme: string;
+    duration: string;
+    objectives: string[];
+    takeaway: string;
+    order: number;
+  };
+  prev?: { slug: string; data: { title: string } } | null;
+  next?: { slug: string; data: { title: string } } | null;
+  currentSlug?: string;
+}
+
+const { session, prev, next, currentSlug } = Astro.props;
+---
+
+<BaseLayout
+  title={`${session.title} — AI Skills Workshop`}
+  description={session.takeaway}
+  currentSlug={currentSlug}
+>
+  <article class="retro-page">
+    <header class="retro-header">
+      <div class="retro-header__badges">
+        <Badge variant="week">Week {session.week}: {session.weekTheme}</Badge>
+        <Badge variant="duration">{session.duration}</Badge>
+      </div>
+      <h1 class="retro-header__title">{session.title}</h1>
+      {session.objectives.length > 0 && (
+        <div class="retro-header__objectives">
+          <h2 class="retro-header__objectives-heading">Session Goals</h2>
+          <ul class="retro-header__objectives-list">
+            {session.objectives.map((obj: string) => (
+              <li class="retro-header__objective">
+                <span aria-hidden="true">→</span>
+                <span>{obj}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </header>
+
+    <div class="retro-body">
+      <slot />
+    </div>
+
+    <footer class="retro-footer">
+      <nav class="retro-nav" aria-label="Session navigation">
+        <div class="retro-nav__prev">
+          {prev && (
+            <a href={`/sessions/${prev.slug}`} class="retro-nav__link retro-nav__link--prev">
+              <span class="retro-nav__direction">← Previous</span>
+              <span class="retro-nav__title">{prev.data.title}</span>
+            </a>
+          )}
+        </div>
+        <div class="retro-nav__next">
+          {next && (
+            <a href={`/sessions/${next.slug}`} class="retro-nav__link retro-nav__link--next">
+              <span class="retro-nav__direction">Next →</span>
+              <span class="retro-nav__title">{next.data.title}</span>
+            </a>
+          )}
+        </div>
+      </nav>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .retro-page {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding-bottom: var(--space-16);
+  }
+
+  .retro-header {
+    padding: var(--space-10) var(--content-padding) var(--space-8);
+    border-bottom: var(--border-width) solid var(--color-border);
+    margin-bottom: var(--space-8);
+  }
+
+  .retro-header__badges {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+
+  .retro-header__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-semibold);
+    color: var(--color-neutral-900);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-6);
+  }
+
+  .retro-header__objectives {
+    background-color: var(--color-bg-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-6);
+  }
+
+  .retro-header__objectives-heading {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-neutral-500);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 var(--space-3);
+  }
+
+  .retro-header__objectives-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .retro-header__objective {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-700);
+    margin-bottom: 0;
+  }
+
+  .retro-body {
+    padding: 0 var(--content-padding);
+    line-height: var(--leading-relaxed);
+  }
+
+  .retro-footer {
+    padding: var(--space-8) var(--content-padding) 0;
+    border-top: var(--border-width) solid var(--color-border);
+    margin-top: var(--space-12);
+  }
+
+  .retro-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .retro-nav__prev { justify-self: start; }
+  .retro-nav__next { justify-self: end; text-align: right; }
+
+  .retro-nav__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color var(--transition-fast),
+      background-color var(--transition-fast);
+    max-width: 260px;
+  }
+
+  .retro-nav__link:hover {
+    border-color: var(--color-primary-400);
+    background-color: var(--color-primary-50);
+    text-decoration: none;
+  }
+
+  .retro-nav__direction {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
+  }
+
+  .retro-nav__title {
+    font-size: var(--text-sm);
+    color: var(--color-neutral-800);
+    font-weight: var(--weight-medium);
+  }
+</style>

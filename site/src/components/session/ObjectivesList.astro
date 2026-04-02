@@ -1,0 +1,69 @@
+---
+export interface Props {
+  objectives: string[];
+}
+
+const { objectives } = Astro.props;
+---
+
+<div class="objectives-list">
+  <h3 class="objectives-list__heading">
+    <span aria-hidden="true">🎯</span> Learning Objectives
+  </h3>
+  <ul class="objectives-list__items">
+    {objectives.map((objective) => (
+      <li class="objectives-list__item">
+        <span class="objectives-list__check" aria-hidden="true">✓</span>
+        <span>{objective}</span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .objectives-list {
+    background-color: var(--color-primary-50);
+    border-left: 4px solid var(--color-primary-400);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-5) var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .objectives-list__heading {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary-700);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .objectives-list__items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .objectives-list__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-700);
+    line-height: var(--leading-normal);
+    margin-bottom: 0;
+  }
+
+  .objectives-list__check {
+    flex-shrink: 0;
+    color: var(--color-primary-600);
+    font-weight: var(--weight-bold);
+    margin-top: 1px;
+  }
+</style>

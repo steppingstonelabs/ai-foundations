@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import SessionLayout from '../../layouts/SessionLayout.astro';
+import RetroLayout from '../../layouts/RetroLayout.astro';
+import { getAdjacentSessions } from '../../lib/sessions';
+
+export async function getStaticPaths() {
+  const sessions = await getCollection('sessions');
+  return sessions.map(session => ({
+    params: { slug: session.slug },
+    props: { session },
+  }));
+}
+
+const { session } = Astro.props;
+const { Content } = await session.render();
+const { prev, next } = await getAdjacentSessions(session.slug);
+const Layout = session.data.isRetro ? RetroLayout : SessionLayout;
+---
+
+<Layout session={session.data} prev={prev} next={next} currentSlug={session.slug}>
+  <Content />
+</Layout>

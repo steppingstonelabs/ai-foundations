@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Badge from '../components/ui/Badge.astro';
+import ProgressBar from '../components/ui/ProgressBar.astro';
+import { getSessionsByWeek, getAllSessions } from '../lib/sessions';
+import { WEEKS } from '../lib/constants';
+
+const sessionsByWeek = await getSessionsByWeek();
+const allSessions = await getAllSessions();
+const totalSessions = allSessions.length;
+---
+
+<BaseLayout
+  title="AI/LLM Skills Coaching Workshop"
+  description="A structured 5-week coaching program for mastering LLM-assisted development — from tokens to context engineering."
+>
+  <div class="home">
+    <header class="home__hero">
+      <div class="home__hero-inner">
+        <div class="home__eyebrow">
+          <Badge variant="week">5-Week Program</Badge>
+          <Badge variant="duration">{totalSessions} Sessions</Badge>
+        </div>
+        <h1 class="home__title">AI/LLM Skills Coaching</h1>
+        <p class="home__subtitle">
+          A structured curriculum for mastering LLM-assisted development —
+          from understanding tokens to engineering specifications that ship.
+        </p>
+        <div class="home__progress">
+          <ProgressBar current={totalSessions} total={17} label="Sessions" />
+        </div>
+      </div>
+    </header>
+
+    <div class="home__curriculum">
+      {WEEKS.map((week) => {
+        const sessions = sessionsByWeek.get(week.number) ?? [];
+        return (
+          <section class="week-section">
+            <div class="week-section__header">
+              <div class="week-section__week-badge">W{week.number}</div>
+              <div class="week-section__meta">
+                <span class="week-section__label">{week.label}</span>
+                <h2 class="week-section__theme">{week.theme}</h2>
+              </div>
+            </div>
+
+            <div class="week-section__sessions">
+              {sessions.map((session) => (
+                <a
+                  href={`/sessions/${session.slug}`}
+                  class="session-card"
+                >
+                  <div class="session-card__number">
+                    {session.data.isRetro ? '✦' : session.data.session}
+                  </div>
+                  <div class="session-card__content">
+                    <h3 class="session-card__title">{session.data.title}</h3>
+                    <p class="session-card__takeaway">{session.data.takeaway}</p>
+                  </div>
+                  <div class="session-card__meta">
+                    <Badge variant="duration">{session.data.duration}</Badge>
+                    <span class="session-card__arrow" aria-hidden="true">→</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .home {
+    padding-bottom: var(--space-16);
+  }
+
+  /* Hero */
+  .home__hero {
+    background: linear-gradient(135deg, var(--color-neutral-900) 0%, var(--color-primary-900) 100%);
+    padding: var(--space-16) var(--content-padding);
+    color: white;
+  }
+
+  .home__hero-inner {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+  }
+
+  .home__eyebrow {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .home__title {
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    color: white;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-4);
+  }
+
+  .home__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-neutral-300);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-8);
+    max-width: 560px;
+  }
+
+  .home__progress {
+    max-width: 320px;
+  }
+
+  /* Curriculum */
+  .home__curriculum {
+    padding: var(--space-10) var(--content-padding);
+    max-width: calc(var(--content-max-width) + var(--content-padding) * 2);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  /* Week Section */
+  .week-section__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-primary-100);
+  }
+
+  .week-section__week-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--color-primary-600);
+    color: white;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+  }
+
+  .week-section__meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .week-section__label {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary-600);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-1);
+  }
+
+  .week-section__theme {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--color-neutral-900);
+    margin: 0;
+  }
+
+  .week-section__sessions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* Session Card */
+  .session-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--color-bg);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast),
+      background-color var(--transition-fast);
+  }
+
+  .session-card:hover {
+    border-color: var(--color-primary-300);
+    box-shadow: var(--shadow-sm);
+    background-color: var(--color-primary-50);
+    text-decoration: none;
+  }
+
+  .session-card__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-600);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+
+  .session-card:hover .session-card__number {
+    background-color: var(--color-primary-600);
+    color: white;
+  }
+
+  .session-card__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .session-card__title {
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    color: var(--color-neutral-900);
+    margin: 0 0 var(--space-1);
+    line-height: var(--leading-tight);
+  }
+
+  .session-card__takeaway {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .session-card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+  }
+
+  .session-card__arrow {
+    font-size: var(--text-base);
+    color: var(--color-neutral-400);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+
+  .session-card:hover .session-card__arrow {
+    transform: translateX(4px);
+    color: var(--color-primary-500);
+  }
+
+  @media (max-width: 640px) {
+    .home__title {
+      font-size: var(--text-3xl);
+    }
+
+    .session-card__takeaway {
+      display: none;
+    }
+  }
+</style>

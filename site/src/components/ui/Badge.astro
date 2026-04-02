@@ -1,0 +1,52 @@
+---
+export interface Props {
+  variant?: 'week' | 'duration' | 'status' | 'session';
+  class?: string;
+}
+
+const { variant = 'duration', class: className } = Astro.props;
+---
+
+<span class:list={['badge', `badge--${variant}`, className]}>
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+
+  .badge--duration {
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-600);
+  }
+
+  .badge--week {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-700);
+  }
+
+  .badge--session {
+    background-color: var(--color-primary-600);
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-sm);
+  }
+
+  .badge--status {
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-600);
+  }
+</style>

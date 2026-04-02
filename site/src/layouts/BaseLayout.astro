@@ -1,0 +1,47 @@
+---
+import BaseHead from '../components/layout/BaseHead.astro';
+import Sidebar from '../components/layout/Sidebar.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  currentSlug?: string;
+}
+
+const { title, description, currentSlug } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body>
+    <div class="app-shell">
+      <Sidebar currentSlug={currentSlug} />
+      <main class="main-content">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .app-shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    min-width: 0;
+    background-color: var(--color-bg);
+  }
+
+  @media (max-width: 768px) {
+    .app-shell {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

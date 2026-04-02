@@ -1,0 +1,74 @@
+---
+// Mobile hamburger menu toggle — controls sidebar visibility on small screens
+---
+
+<button
+  id="mobile-menu-toggle"
+  class="mobile-menu-toggle"
+  aria-label="Toggle navigation menu"
+  aria-expanded="false"
+  aria-controls="sidebar"
+>
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+</button>
+
+<style>
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: var(--radius-md);
+    transition: background-color var(--transition-fast);
+  }
+
+  .mobile-menu-toggle:hover {
+    background-color: var(--color-neutral-100);
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 1.25rem;
+    height: 2px;
+    background-color: var(--color-neutral-600);
+    border-radius: var(--radius-full);
+    transition: transform var(--transition-base), opacity var(--transition-base);
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = sidebar?.classList.toggle('sidebar--open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Close sidebar when clicking outside
+  document.addEventListener('click', (e) => {
+    if (
+      sidebar?.classList.contains('sidebar--open') &&
+      !sidebar.contains(e.target as Node) &&
+      !toggle?.contains(e.target as Node)
+    ) {
+      sidebar.classList.remove('sidebar--open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>

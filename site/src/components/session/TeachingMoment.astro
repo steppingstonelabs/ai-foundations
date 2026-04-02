@@ -1,0 +1,52 @@
+---
+// No props — slot-only component
+---
+
+<div class="teaching-moment">
+  <div class="teaching-moment__header">
+    <span class="teaching-moment__icon" aria-hidden="true">💡</span>
+    <strong class="teaching-moment__title">Teaching Moment</strong>
+  </div>
+  <div class="teaching-moment__body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .teaching-moment {
+    border-left: 4px solid var(--color-warning);
+    background-color: #fffbeb;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+
+  .teaching-moment__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .teaching-moment__icon {
+    font-size: var(--text-base);
+  }
+
+  .teaching-moment__title {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: #92400e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .teaching-moment__body {
+    font-size: var(--text-sm);
+    color: var(--color-neutral-700);
+    line-height: var(--leading-relaxed);
+  }
+
+  .teaching-moment__body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

@@ -14,6 +14,10 @@ A progressive, hands-on curriculum for software developers to build real fluency
 **Cohorts per year:** ~8
 **Goal:** Bring participants to the point where they adopt a spec-driven development mindset with AI agents
 
+## Tech Stack
+
+Use the Astro framework to build a modular, static site that has a left-hand navigation with a link for each session. When clicked the session's content will load in the main content area.
+
 ---
 
 ## The Throughline App

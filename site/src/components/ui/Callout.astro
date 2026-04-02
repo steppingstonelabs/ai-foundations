@@ -1,0 +1,109 @@
+---
+export interface Props {
+  type?: 'info' | 'warning' | 'tip' | 'danger';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const icons = {
+  info:    '💡',
+  warning: '⚠️',
+  tip:     '✨',
+  danger:  '🚨',
+};
+
+const defaultTitles = {
+  info:    'Note',
+  warning: 'Warning',
+  tip:     'Tip',
+  danger:  'Caution',
+};
+
+const icon = icons[type];
+const displayTitle = title ?? defaultTitles[type];
+---
+
+<div class:list={['callout', `callout--${type}`]}>
+  <div class="callout__header">
+    <span class="callout__icon" aria-hidden="true">{icon}</span>
+    <span class="callout__title">{displayTitle}</span>
+  </div>
+  <div class="callout__body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .callout {
+    border-left: 4px solid;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .callout__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .callout__icon {
+    font-size: var(--text-base);
+    line-height: 1;
+  }
+
+  .callout__title {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .callout__body {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  .callout__body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  /* Variants */
+  .callout--info {
+    border-left-color: var(--color-info);
+    background-color: #eff6ff;
+  }
+
+  .callout--info .callout__title {
+    color: #1d4ed8;
+  }
+
+  .callout--warning {
+    border-left-color: var(--color-warning);
+    background-color: #fffbeb;
+  }
+
+  .callout--warning .callout__title {
+    color: #92400e;
+  }
+
+  .callout--tip {
+    border-left-color: var(--color-success);
+    background-color: #f0fdf4;
+  }
+
+  .callout--tip .callout__title {
+    color: #065f46;
+  }
+
+  .callout--danger {
+    border-left-color: var(--color-danger);
+    background-color: #fef2f2;
+  }
+
+  .callout--danger .callout__title {
+    color: #991b1b;
+  }
+</style>
