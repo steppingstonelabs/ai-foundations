@@ -48,7 +48,7 @@ const totalSessions = allSessions.length;
             <div class="week-section__sessions">
               {sessions.map((session) => (
                 <a
-                  href={`/sessions/${session.slug}`}
+                  href={`${import.meta.env.BASE_URL}sessions/${session.slug}`}
                   class="session-card"
                 >
                   <div class="session-card__number">

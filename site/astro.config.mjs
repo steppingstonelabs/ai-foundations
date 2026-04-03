@@ -9,7 +9,7 @@ export default defineConfig({
   },
   output: 'static',
   site: process.env.SITE || 'https://steppingstonelabs.github.io',
-  base: process.env.BASE_PATH || '/ai-foundations',
+  base: process.env.BASE_PATH || '/ai-foundations/',
   markdown: {
     shikiConfig: {
       theme: 'github-dark',
