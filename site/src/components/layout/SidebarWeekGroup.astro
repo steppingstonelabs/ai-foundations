@@ -29,7 +29,7 @@ const { week, theme, sessions, currentSlug } = Astro.props;
   <nav class="week-group__sessions">
     {sessions.map((session) => (
       <SidebarLink
-        href={`/sessions/${session.slug}`}
+        href={`${import.meta.env.BASE_URL}sessions/${session.slug}`}
         sessionNumber={session.data.session}
         title={session.data.title}
         duration={session.data.duration}

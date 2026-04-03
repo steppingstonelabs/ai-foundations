@@ -47,7 +47,7 @@ const { session, prev, next, currentSlug } = Astro.props;
       <nav class="session-nav" aria-label="Session navigation">
         <div class="session-nav__prev">
           {prev && (
-            <a href={`/sessions/${prev.slug}`} class="session-nav__link session-nav__link--prev">
+            <a href={`${import.meta.env.BASE_URL}sessions/${prev.slug}`} class="session-nav__link session-nav__link--prev">
               <span class="session-nav__direction">← Previous</span>
               <span class="session-nav__title">{prev.data.title}</span>
             </a>
@@ -55,7 +55,7 @@ const { session, prev, next, currentSlug } = Astro.props;
         </div>
         <div class="session-nav__next">
           {next && (
-            <a href={`/sessions/${next.slug}`} class="session-nav__link session-nav__link--next">
+            <a href={`${import.meta.env.BASE_URL}sessions/${next.slug}`} class="session-nav__link session-nav__link--next">
               <span class="session-nav__direction">Next →</span>
               <span class="session-nav__title">{next.data.title}</span>
             </a>
