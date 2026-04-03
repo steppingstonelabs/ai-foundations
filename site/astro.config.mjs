@@ -8,7 +8,8 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   output: 'static',
-  site: 'https://workshop.steppingstonelabs.com',
+  site: process.env.SITE || 'https://steppingstonelabs.github.io',
+  base: process.env.BASE_PATH || '/ai-foundations',
   markdown: {
     shikiConfig: {
       theme: 'github-dark',
